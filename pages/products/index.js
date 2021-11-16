@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React from 'react';
 import { ProductsList } from '../../containers';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../../slices/productSlice';

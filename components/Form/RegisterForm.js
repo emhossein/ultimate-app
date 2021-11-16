@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { getAuthStatus } from '../../slices/authSlice';
 
-const Form = () => {
+const RegisterForm = () => {
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -103,4 +103,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default RegisterForm;

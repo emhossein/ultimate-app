@@ -1,17 +1,8 @@
 import React, { useEffect } from 'react';
-import Image from 'next/image';
 import styled from '@emotion/styled';
 import { Button, H2, H3, Img, Paragraph } from '..';
-import { useSelector, useDispatch } from 'react-redux';
-import { getProducts } from '../../slices/productSlice';
 
 const FeaturedProduct = ({ products, loading }) => {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getProducts());
-  // }, []);
-  // const { products, loading } = useSelector(state => state.product);
-
   const getFeatured = () => {
     return products.find(product => product.featured === true);
   };

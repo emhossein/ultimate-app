@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import regeneratorRuntime from 'regenerator-runtime';
 
 export const getAuthStatus = createAsyncThunk(
   'auth/getAuthStatus',
@@ -15,14 +16,10 @@ const authSlice = createSlice({
     logged: null,
     loading: null,
     user: [],
-    showCart: false,
   },
   reducers: {
     logout: state => {
       state.logged = false;
-    },
-    toggleCart: state => {
-      state.showCart = !state.showCart;
     },
   },
   extraReducers: {

@@ -1,5 +1,7 @@
+import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import Reset from '../containers/Reset/Reset';
+import regeneratorRuntime from 'regenerator-runtime';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {

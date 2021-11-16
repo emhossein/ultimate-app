@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { ThemeProvider } from '@emotion/react';
 import theme from '../config/theme';
 
-const mountWithTheme = children => {
+const mountWithTheme = ({ children }) => {
   return renderer.create(
     <ThemeProvider theme={theme}>{children}</ThemeProvider>
   );

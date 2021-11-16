@@ -1,3 +1,4 @@
+import React from 'react';
 import Head from 'next/head';
 import App from 'next/app';
 import '../styles/globals.css';

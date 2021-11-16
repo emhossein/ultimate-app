@@ -1,8 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import styled from '@emotion/styled';
-import StyledComponent from '../components/StyledComponent/StyledComponent';
-import { H1, Paragraph } from '../components/Typography';
+import { H1, Paragraph, HyperLink } from '../components';
 
 import { useTheme } from '@emotion/react';
 
@@ -29,6 +28,11 @@ const About = () => {
         line-height: 2rem;
         text-align: center;
         margin-top: 5rem;
+        div {
+          width: 10%;
+          margin: 0;
+          display: inline-block;
+        }
       }
     }
   `;
@@ -42,8 +46,9 @@ const About = () => {
       <div className="text">
         <Paragraph>
           This whole little project is build by next.js(12.0.1) for assignment
-          of Maktabkhoone. <br />
-          I used <StyledComponent /> for CSS in Js. <br />
+          of Maktabkhoone. <br />I used{' '}
+          <HyperLink link="https://emotion.sh/">Emotion</HyperLink> for CSS in
+          Js. <br />
         </Paragraph>
       </div>
     </Wrapper>

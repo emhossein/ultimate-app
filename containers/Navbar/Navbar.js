@@ -9,7 +9,8 @@ import { logout } from '../../slices/authSlice';
 
 const Navbar = () => {
   const [hamburger, setHamburger] = useState(false);
-  const logged = useSelector(state => state.auth.logged);
+  const { logged, loading } = useSelector(state => state.auth);
+  const { totalQuantity } = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -80,7 +81,7 @@ const Navbar = () => {
                     <Link href="/login">Login</Link>
                   </li>
                 )}
-                {logged && (
+                {logged && loading && (
                   <li>
                     <a onClick={logoutHandler}>
                       <FiUserMinus />
@@ -91,7 +92,7 @@ const Navbar = () => {
                 {logged && (
                   <li>
                     <HyperLink link="/cart">
-                      <FiShoppingCart /> Cart
+                      <FiShoppingCart /> Cart <span>{totalQuantity}</span>
                     </HyperLink>
                   </li>
                 )}
