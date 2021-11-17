@@ -11,7 +11,7 @@ const LoginForm = () => {
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { loading } = useSelector(state => state.auth);
+  const { loading, user } = useSelector(state => state.auth);
 
   const {
     register,

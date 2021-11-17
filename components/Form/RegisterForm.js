@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '..';
 import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { getAuthStatus } from '../../slices/authSlice';
+import { getAuthRegister } from '../../slices/authSlice';
 
 const RegisterForm = () => {
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { loading } = useSelector(state => state.auth);
+  const auth = useSelector(state => state.auth);
 
   const {
     register,
@@ -20,9 +20,14 @@ const RegisterForm = () => {
   } = useForm();
 
   const submitHandler = async data => {
-    dispatch(getAuthStatus());
-    router.push('/');
+    dispatch(getAuthRegister());
   };
+
+  useEffect(() => {
+    if (auth.user[0].message === 'ok') {
+      router.push('/login');
+    }
+  }, [auth.user]);
 
   const Wrapper = styled.div`
     width: 100%;
@@ -97,7 +102,9 @@ const RegisterForm = () => {
 
         {errors.password && <p>please enter your password!</p>}
 
-        <Button>{loading ? <div className="loading" /> : 'REGISTER'}</Button>
+        <Button>
+          {auth.loading ? <div className="loading" /> : 'REGISTER'}
+        </Button>
       </form>
     </Wrapper>
   );
