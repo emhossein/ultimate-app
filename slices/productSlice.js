@@ -1,13 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import actionTypes from '../config/actionTypes';
+import asyncThunk from '../utils/asyncThunk';
 
-export const getProducts = createAsyncThunk(
-  'Products/getProducts',
-  async () => {
-    return fetch(
-      'https://6188ec60d0821900178d7620.mockapi.io/products/products'
-    ).then(res => res.json());
-  }
-);
+export const getProducts = asyncThunk(actionTypes.GET_LIST_PRODUCT, 'products');
 
 const productsSlice = createSlice({
   name: 'products',

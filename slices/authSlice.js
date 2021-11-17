@@ -1,14 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import actionTypes from '../config/actionTypes';
 import regeneratorRuntime from 'regenerator-runtime';
+import asyncThunk from '../utils/asyncThunk';
 
-export const getAuthStatus = createAsyncThunk(
-  'auth/getAuthStatus',
-  async () => {
-    return fetch(
-      'https://6188ec60d0821900178d7620.mockapi.io/products/login'
-    ).then(res => res.json());
-  }
-);
+export const getAuthStatus = asyncThunk(actionTypes.LOGIN, 'login');
 
 const authSlice = createSlice({
   name: 'auth',
