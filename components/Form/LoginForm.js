@@ -1,27 +1,42 @@
 import React, { useState } from 'react';
-import { Button } from '..';
+import { Button, Paragraph } from '..';
 import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { getAuthStatus } from '../../slices/authSlice';
 
-const LoginForm = () => {
+const LoginForm = ({ user, loading }) => {
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { loading, user } = useSelector(state => state.auth);
+
+  const [error, setError] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
 
+  const email = watch('email', false);
+  const password = watch('password', false);
+
+  const exactEmail = user.map(use => use.email);
+  const exactPassword = user.map(use => use.password);
+
   const submitHandler = async data => {
-    dispatch(getAuthStatus());
-    router.push('/');
+    if (!exactEmail.includes(email) || !exactPassword.includes(password)) {
+      console.log('Incorrect username or password.');
+      setError(true);
+      return;
+    } else {
+      dispatch(getAuthStatus());
+      router.push('/');
+      setError(false);
+    }
   };
 
   const Wrapper = styled.div`
@@ -50,10 +65,15 @@ const LoginForm = () => {
       }
 
       p {
-        text-align: center;
+        margin: 0 auto;
         line-height: 1.2;
         margin: 0;
         color: #929292;
+      }
+
+      p:last-child {
+        margin: 1rem 0;
+        color: red;
       }
     }
   `;
@@ -72,7 +92,7 @@ const LoginForm = () => {
             },
           })}
         />
-        {errors.email && <p>please enter your email!</p>}
+        {errors.email && <Paragraph>please enter your email!</Paragraph>}
 
         <input
           type="password"
@@ -86,9 +106,10 @@ const LoginForm = () => {
           })}
         />
 
-        {errors.password && <p>please enter your password!</p>}
+        {errors.password && <Paragraph>please enter your password!</Paragraph>}
 
         <Button>{loading ? <div className="loading" /> : 'LOGIN'}</Button>
+        {error && <Paragraph>Incorrect username or password.</Paragraph>}
       </form>
     </Wrapper>
   );

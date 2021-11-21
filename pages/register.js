@@ -2,8 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import { H3, HyperLink, RegisterForm } from '../components';
 import styled from '@emotion/styled';
+import { getAuthStatus } from '../slices/authSlice';
 
-const Register = () => {
+const Register = ({ user, loading }) => {
   const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -34,10 +35,20 @@ const Register = () => {
         <title>Register</title>
       </Head>
       <H3>Create an account</H3>
-      <RegisterForm />
+      <RegisterForm user={user} loading={loading} />
       <HyperLink link="/login">Already have an account?</HyperLink>
     </Wrapper>
   );
+};
+
+Register.getInitialProps = async ({ reduxStore }) => {
+  await reduxStore.dispatch(getAuthStatus());
+  const { auth } = reduxStore.getState();
+
+  return {
+    user: auth.user,
+    loading: auth.loading,
+  };
 };
 
 export default Register;

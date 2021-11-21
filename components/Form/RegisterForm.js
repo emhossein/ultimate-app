@@ -1,33 +1,48 @@
-import React, { useEffect } from 'react';
-import { Button } from '..';
+import React, { useState } from 'react';
+import { Button, Paragraph } from '..';
 import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { getAuthRegister } from '../../slices/authSlice';
+import { postAuthRegister } from '../../slices/authSlice';
 
-const RegisterForm = () => {
+const RegisterForm = ({ user, loading }) => {
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth);
+
+  const [error, setError] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
 
-  const submitHandler = async data => {
-    dispatch(getAuthRegister());
+  const name = watch('firstName', false);
+  const email = watch('email', false);
+  const password = watch('password', false);
+
+  const values = {
+    name,
+    email,
+    password,
   };
 
-  useEffect(() => {
-    if (auth.user[0].message === 'ok') {
+  const exactEmail = user.map(use => use.email);
+
+  const submitHandler = async data => {
+    if (!exactEmail.includes(email)) {
+      dispatch(postAuthRegister(values));
       router.push('/login');
+      setError(false);
+    } else {
+      setError(true);
+      return;
     }
-  }, [auth.user]);
+  };
 
   const Wrapper = styled.div`
     width: 100%;
@@ -59,6 +74,11 @@ const RegisterForm = () => {
         line-height: 1.2;
         margin: 0;
         color: #929292;
+      }
+
+      p:last-child {
+        color: red;
+        margin: 1rem 0;
       }
     }
   `;
@@ -102,9 +122,9 @@ const RegisterForm = () => {
 
         {errors.password && <p>please enter your password!</p>}
 
-        <Button>
-          {auth.loading ? <div className="loading" /> : 'REGISTER'}
-        </Button>
+        <Button>{loading ? <div className="loading" /> : 'REGISTER'}</Button>
+
+        {error && <Paragraph>This email already exist!</Paragraph>}
       </form>
     </Wrapper>
   );

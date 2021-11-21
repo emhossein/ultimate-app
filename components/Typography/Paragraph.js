@@ -3,17 +3,17 @@ import styled from '@emotion/styled';
 
 import { useTheme } from '@emotion/react';
 
-const H1 = ({ children }) => {
+const Paragraph = ({ children }) => {
   const theme = useTheme();
 
-  const Heading1 = styled.p`
+  const Paragraph = styled.p`
     font-weight: ${theme.typography.paragraph.fontWeight};
     line-height: ${theme.typography.paragraph.lineHeight};
     margin-bottom: ${theme.typography.paragraph.marginBottom};
     font-size: ${theme.typography.paragraph.fontSize};
   `;
 
-  return <Heading1>{children}</Heading1>;
+  return <Paragraph>{children}</Paragraph>;
 };
 
-export default H1;
+export default Paragraph;

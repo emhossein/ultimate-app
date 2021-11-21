@@ -3,8 +3,9 @@ import Head from 'next/head';
 import { LoginForm } from '../components';
 import { H3, HyperLink } from '../components';
 import styled from '@emotion/styled';
+import { getAuthStatus } from '../slices/authSlice';
 
-const Login = () => {
+const Login = ({ user, loading }) => {
   const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -24,10 +25,20 @@ const Login = () => {
         <title>Login</title>
       </Head>
       <H3>Login</H3>
-      <LoginForm />
+      <LoginForm user={user} loading={loading} />
       <HyperLink link="/register">don&apos;t have an account yet?</HyperLink>
     </Wrapper>
   );
+};
+
+Login.getInitialProps = async ({ reduxStore }) => {
+  await reduxStore.dispatch(getAuthStatus());
+  const { auth } = reduxStore.getState();
+
+  return {
+    user: auth.user,
+    loading: auth.loading,
+  };
 };
 
 export default Login;

@@ -1,17 +1,36 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import actionTypes from '../config/actionTypes';
 import regeneratorRuntime from 'regenerator-runtime';
-import asyncThunk from '../utils/asyncThunk';
 
-export const getAuthStatus = asyncThunk(actionTypes.LOGIN, 'login');
-export const getAuthRegister = asyncThunk(actionTypes.REGISTER, 'register');
+export const getAuthStatus = createAsyncThunk(
+  'auth/getAuthStatus',
+  async () => {
+    return fetch(
+      'https://6188ec60d0821900178d7620.mockapi.io/products/register'
+    ).then(res => res.json());
+  }
+);
+export const postAuthRegister = createAsyncThunk(
+  'auth/postAuthRegister',
+  async payload => {
+    return fetch(
+      'https://6188ec60d0821900178d7620.mockapi.io/products/register',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }
+    ).then(res => res.json());
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
     logged: null,
     loading: null,
-    user: [{ message: '' }],
+    user: [],
   },
   reducers: {
     logout: state => {
@@ -32,14 +51,15 @@ const authSlice = createSlice({
       state.loading = false;
       state.user = [];
     },
-    [getAuthRegister.pending]: state => {
-      state.loading = true;
+    [postAuthRegister.pending]: state => {
+      (state.logged = false), (state.loading = true);
     },
-    [getAuthRegister.fulfilled]: (state, action) => {
-      state.user = action.payload;
+    [postAuthRegister.fulfilled]: (state, action) => {
+      state.user = action.response;
+      state.logged = true;
       state.loading = false;
     },
-    [getAuthRegister.rejected]: state => {
+    [postAuthRegister.rejected]: state => {
       state.logged = false;
       state.loading = false;
       state.user = [];
